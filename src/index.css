@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,300&family=Roboto&display=swap');
+
+* {
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul, li {
+    list-style: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+#root {
+    display: flex;
+    min-height: 100vh;
+}
+
+.App {
+    min-height: 500px;
+    width: 550px;
+    margin: auto auto;
+    border: 2px solid #bde0fe;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 40px;
+    box-shadow: 3px 2px 20px 3px #CDB4DB;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff006e;
+}
+
+.box {
+    flex: 1 1 90%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: auto;
+}
+
+.row {
+    width: 90%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.row>div {
+    width: 25px;
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 50%;
+}
+
+.row>div:hover {
+    cursor: pointer;
+}
+
+.end {
+    justify-content: flex-end;
+}
+
+.confirm {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.not-confirm {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+
+
+@media screen and (max-width: 550px) {
+    .App {
+        width: 90vw;
+        min-height: 60vh;
+    }
+}
