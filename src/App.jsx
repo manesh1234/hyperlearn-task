@@ -9,6 +9,32 @@ function App() {
     const [screen3, setScreen3] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [arr, setArr] = useState(Array(11).fill(false));
+    const [localArr, setLocalArr] = useState([]);
+
+    useEffect(() => {
+        const loc1 = localStorage.getItem('loc1');
+        const loc2 = localStorage.getItem('loc2');
+        if (!loc1) {
+            localStorage.setItem('loc1', JSON.stringify([]));
+            localStorage.setItem('loc2', JSON.stringify([]));
+            return;
+        }
+        if (JSON.parse(loc1).length === 0) {
+            setScreen1(true);
+            setScreen2(false);
+            setScreen3(false);
+        }
+        else if (JSON.parse(loc2).length === 0) {
+            setScreen1(false);
+            setScreen2(true);
+            setScreen3(false);
+        }
+        else {
+            setScreen1(false);
+            setScreen2(false);
+            setScreen3(true);
+        }
+    }, [])
 
     const clickHandler = (index) => {
         if (arr[index]) {
@@ -27,20 +53,15 @@ function App() {
         let newArr = [...arr];
         newArr[index] = true;
         setArr(newArr);
+        setLocalArr([...localArr, index]);
+    }
+
+    const storageSetter = (newArr) => {
         if (screen1) {
-            newArr = JSON.parse(localStorage.getItem('loc1'));
-            newArr.push(index);
             localStorage.setItem('loc1', JSON.stringify(newArr));
         }
         else if (screen2) {
-            newArr = JSON.parse(localStorage.getItem('loc2'));
-            newArr.push(index);
             localStorage.setItem('loc2', JSON.stringify(newArr));
-        }
-        else if (screen3) {
-            newArr = JSON.parse(localStorage.getItem('loc3'));
-            newArr.push(index);
-            localStorage.setItem('loc3', JSON.stringify(newArr));
         }
     }
 
@@ -61,7 +82,8 @@ function App() {
         setScreen1(false);
         setScreen2(true);
         setArr(Array(11).fill(false));
-        localStorage.setItem('loc2', JSON.stringify([]));
+        storageSetter(localArr);
+        setLocalArr([]);
     }
 
     const verifyHandler = () => {
@@ -74,8 +96,7 @@ function App() {
             return;
         }
         const arr1 = JSON.parse(localStorage.getItem('loc1'));
-        const arr2 = JSON.parse(localStorage.getItem('loc2'));
-        if (compareArrays(arr1, arr2)) {
+        if (compareArrays(arr1, localArr)) {
             toast.success("Pattern successfully set", {
                 className: "custom-toast",
                 draggable: true,
@@ -85,6 +106,7 @@ function App() {
             setScreen2(false);
             setScreen3(true);
             setArr(Array(11).fill(false));
+            storageSetter(localArr);
         }
         else {
             toast.error("Pattern is incorrect", {
@@ -93,8 +115,8 @@ function App() {
                 position: toast.POSITION.TOP_RIGHT,
             });
             setArr(Array(11).fill(false));
-            localStorage.setItem('loc2', JSON.stringify([]));
         }
+        setLocalArr([]);
     }
 
     const logInHandler = () => {
@@ -107,15 +129,13 @@ function App() {
             return;
         }
         const arr1 = JSON.parse(localStorage.getItem('loc1'));
-        const arr2 = JSON.parse(localStorage.getItem('loc3'));
-        if (compareArrays(arr1, arr2)) {
+        if (compareArrays(arr1, localArr)) {
             toast.success("logging you in", {
                 className: "custom-toast",
                 draggable: true,
                 position: toast.POSITION.TOP_RIGHT,
             });
             setIsLoggedIn(true);
-            localStorage.setItem('loc3', JSON.stringify([]));
         }
         else {
             toast.error("Pattern is incorrect", {
@@ -124,69 +144,10 @@ function App() {
                 position: toast.POSITION.TOP_RIGHT,
             });
             setArr(Array(11).fill(false));
-            localStorage.setItem('loc3', JSON.stringify([]));
         }
+        setLocalArr([]);
     }
 
-    useEffect(() => {
-        const loc1 = localStorage.getItem('loc1');
-        if (!loc1) {
-            localStorage.setItem('loc1', JSON.stringify([]));
-        }
-        else {
-            const newArr = JSON.parse(localStorage.getItem('loc1'));
-            if (newArr.length > 0) {
-                setScreen1(true);
-                setScreen2(false);
-                setScreen3(false);
-            }
-            const tmp = Array(11).fill(false);
-            for (let i = 0; i < newArr.length; i++) {
-                tmp[newArr[i]] = true;
-            }
-            setArr(tmp);
-        }
-    }, [])
-
-    useEffect(() => {
-        const loc2 = localStorage.getItem('loc2');
-        if (!loc2) {
-            localStorage.setItem('loc2', JSON.stringify([]));
-        }
-        else {
-            const newArr = JSON.parse(localStorage.getItem('loc2'));
-            if (newArr.length > 0) {
-                setScreen1(false);
-                setScreen2(true);
-                setScreen3(false);
-            }
-            const tmp = Array(11).fill(false);
-            for (let i = 0; i < newArr.length; i++) {
-                tmp[newArr[i]] = true;
-            }
-            setArr(tmp);
-        }
-    }, [])
-
-    useEffect(() => {
-        const loc3 = localStorage.getItem('loc3');
-        if (!loc3) {
-            localStorage.setItem('loc3', JSON.stringify([]));
-        }
-        else {
-            const newArr = JSON.parse(localStorage.getItem('loc3'));
-            if (newArr.length > 0) {
-                setScreen1(false);
-                setScreen2(false);
-                setScreen3(true);
-            }
-            const tmp = Array(11).fill(false);
-            for (let i = 0; i < newArr.length; i++) {
-                tmp[newArr[i]] = true;
-            }
-            setArr(tmp);
-        }
-    }, [])
 
     if (isLoggedIn) {
         return <h1>Welcome ! succesfully Logged In</h1>
