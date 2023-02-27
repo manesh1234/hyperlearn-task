@@ -196,7 +196,7 @@ function App() {
                     {
                         screen3 && <button className={findOnes(arr) < 4 ? 'not-confirm' : 'confirm'} onClick={() => {
                             logInHandler();
-                        }}>Log IN</button>
+                        }}>Log In</button>
                     }
                 </div>
             </div>
